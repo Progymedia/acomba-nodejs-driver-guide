@@ -1,0 +1,66 @@
+= Step 2 - A more complete example
+
+This exemple will show you how to export all *invoicing documents* that were created on or after a certain date. The header information and the lines information will be stored in two separate files.
+
+== The code
+
+[source,javascript,indent=0]
+----
+include::example.js[tag=**]
+----
+
+== Some explanations...
+
+At this point, you must be already familiar with the first part of the code where we set up the driver so let's skip it. Instead, let's take a look a the main method :
+
+[source,javascript,indent=0]
+----
+include::example.js[tags=main]
+----
+
+We make sure that the concepts we'd like to work with are ready. In our case, we'll need the `invoicing` and the `customer` concept.
+
+After that, we're defining a date (`specificDay`) from when we'd like to gather invoicing documents. You could also define a date far back in time, like `new Date(2000, 1, 1, 0 , 0)` if you'd get all the invoicing documents. Alternatively, to get all invoicing documents, calling the `getInvoicingIds()` method would be a cleaner approach. Once all the identifiers are gathered, we can request the documents by calling the `getInvoicings(ids)` method.
+
+
+Now, let's see that `exportToCSV` method...
+
+[source,javascript,indent=0]
+----
+include::example.js[tags=exportToCSV]
+----
+
+Both `printOrderHeader()` and `printOrderLineHeader()` methods are very similar to the `printOrder(...)` and `printOrderLines(...)` method so we'll cover them all at once when reviewing the latters.
+
+The for loop iterates over all the invoices. When the driver returns multiple documents, it returns them as a map (or *enumerable properties*), with the `identifier` as the key :
+
+[source,javascript,indent=0]
+----
+{
+	invoice1: { invoicing-object },
+	invoice2: { invoicing-object },
+    order1:   { invoicing-object }
+}
+----
+
+For each invoicing document, we ask the driver to retrieve the related customer using the `invoice.customerNumber` property. Once we have all the required data, it's time to export them!
+
+=== Exporting invoicings
+
+[source,javascript,indent=0]
+----
+include::example.js[tags=printOrder]
+----
+
+Here, we append all the values for the defined column headers. Note that we use the `customer` object to get some additionnal information on the customer (the name in this instance). Once the values are ready, we can use the `fs` import to write them to the order file.
+
+NOTE: Make sure that you have the same number of columns (header) and values.
+
+=== Exporting invoicing lines
+
+[source,javascript,indent=0]
+----
+include::example.js[tags=printOrderLines]
+----
+
+Here again, we append all the values for the defined column headers. The only difference is that we have to loop through each line on the invoicing document.

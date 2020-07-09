@@ -1,0 +1,154 @@
+= Step 1 - The basics
+
+The following section will get you started on your journey, from configuration to simple data fetching.
+
+== Configuration
+
+You can start by creating an empty directory, and initializing a new Node.js projet by running the following line inside that directory (via your preferred command-line utility) :
+
+[source,console]
+----
+npm init
+----
+
+You can now add the acomba-driver to your project by running the following line :
+
+[source,console]
+----
+npm i acomba-driver
+----
+
+After that, create a new file named `index.js` (which is the default entry point for a Node.js application) in that directory, and add the following line :
+
+[source,javascript]
+----
+var driver = require('acomba-driver');
+----
+
+You then have to append the appropriate configuration to that file :
+
+[source,javascript]
+----
+var configuration = new driver.AcombaConfigurationBuilder()
+    .setAcombaPath('C:\\Aco_SDK')
+    .setCompanyPath('C:\\F1000.dta\\YourCompany')
+    .setCachePath('C:\\Aco_Cache')
+    .setUsername('myusername')
+    .setPassword('mypassword')
+	.doInitializeConceptsOnStart(true)
+    .build();
+----
+
+Here's a quick recap of possible configuration options :
+
+* `setAcombaPath(string)` : The path where Acomba is installed (where the Acomba.exe is located)
+* `setCompanyPath(string)` : The path where the Acomba company files are located
+* `setCachePath(string)` : The path where the driver will store its internal cache (*you will have to create this folder*)
+* `setUsername(string)` : The Acomba username
+* `setPassword(string)` : The Acomba password
+* `doInitializeConceptsOnStart(bool)` : Indicates whether or not all concepts should be initialized when the driver starts
+* `setLicenseKey(string)` : The provided license key, if available. By default, the driver will run in *demo mode*
+
+Once you're done with the configuration, you can go ahead and establish the connection to Acomba!
+
+[source,javascript]
+----
+var connection = driver.AcombaDriver.connect(configuration, true);
+----
+
+== Concepts
+
+The Acomba driver offers a well defined set of concepts that you can interact with :
+
+* customer
+* product
+* salesrep
+* territory
+* user
+* invoicing
+
+NOTE:  It is possible to get a precise list of concepts by calling the `connection.getConcepts()` method, which returns an array of concept names.
+
+Behind the scene, after successfully establishing the connection to Acomba, the driver builds a cache to quickly navigate through each concept (unless `initializeConceptsOnStart` is set to false). You'll have to make sure that the concept is ready before use. This can be done by calling the following method :
+
+[source,javascript]
+----
+await connection.waitUntilConceptReady('customer');
+----
+
+NOTE: Depending on the number of elements in the concept, it can take several minutes for the concept's cache to be ready.
+
+In the case where `initializeConceptsOnStart = false`, you will have to manually initialize each concept that you want to work with, as follow :
+
+[source,javascript]
+----
+connection.initializeConcept('customer');
+connection.initializeConcept('product');
+...
+----
+
+=== Concept identification
+
+Each concept possess an `id` field. Here's how the driver identifies each concept :
+
+* customer : `number`
+* product : `number`
+* salesrep : `number`
+* territory : `number`
+* user : `number`
+* invoicing : `type` _ `number` _ `customer_number`
+
+== Fetching your first customers
+
+After making sure that the concepts are ready, all that's left is to interact with the driver to manipulate data. Let's say that you know precisely the *customer numbers* that you want to fetch, all you have to do is :
+
+[source,javascript]
+----
+var customers = connection.getCustomers(["SUPERMARKET-A", "SUPERMARKET-B"]);
+console.log('Found customers:\n%j', customers);
+----
+
+Output :
+
+[source,console]
+----
+Found customers:
+{
+  "SUPERMARKET-A": {
+    "id": "SUPERMARKET-A",
+    "number": "SUPERMARKET-A",
+    "name": "Supermarket A",
+    "address": "100 Broadway",
+    "city": "Blainville"
+,    [...]
+  },
+  "SUPERMARKET-B": {
+    "id": "SUPERMARKET-B",
+    "number": "SUPERMARKET-B",
+    "name": "Supermarket B",
+    "address": "200 Broadway",
+    "city": "Blainville",
+    [...]
+  }
+}
+----
+
+In the instance where you don't know the customer numbers (or maybe you want to iterate through all customers), you can ask the driver for all known identifiers :
+
+[source,javascript]
+----
+var ids = await connection.getCustomerIds();
+console.log('Found customer ids : ' + ids);
+----
+
+You can now iterate over the array of identifiers :
+
+[source,javascript]
+----
+var id;
+
+for (id of ids) {
+  var customer = connection.getCustomer(id);
+  console.log('Customer number=' + customer.number + ', name=' + customer.name);
+}
+----

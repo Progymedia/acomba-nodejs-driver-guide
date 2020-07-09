@@ -1,0 +1,35 @@
+= Step 0 - Prerequisites
+
+Before you start following this guide, it may be useful to know how to setup your environment.
+
+== Windows
+
+At the moment, Acomba is a Windows exclusive software. You'll have to have a working Windows system, preferably with the latest version of Windows 10.
+
+https://www.microsoft.com/en-ca/windows/get-windows-10[More about *Windows 10*]
+
+NOTE: This driver was not tested with any other Windows version
+
+== Acomba
+
+Having the Acomba software is *critical* in order to be able to use the driver. Make sure that you have either an activated version or the developer version.
+
+https://www.acomba.com/[More about *Acomba*]
+
+== Node.JS
+
+In order to develop scripts and applications using this driver, it is *required* to have a working Node.js environment.
+
+https://nodejs.org/en/download/[Download and install *Node.js*]
+
+== Development tools
+
+=== Editor
+
+To make your life easier, you might want to use a JavaScript editor. Here are some suggestions :
+
+* https://code.visualstudio.com/download[Download and install *Visual Studio Code*] (Recommended)
+* https://www.sublimetext.com/3[Download and install *Sublime Text 3*]
+* https://atom.io/[Download and install *Atom*]
+
+NOTE: Don't forget to install the related Node.js plugins/extensions to get the best out of your JavaScript editor.

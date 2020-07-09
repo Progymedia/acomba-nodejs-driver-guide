@@ -1,0 +1,18 @@
+= Introduction
+
+This guide is an introduction to using the Acomba Node.JS driver to execute from simple to more advanced tasks.
+
+== About this guide
+
+We assume that the reader is familiar with the Node.JS (javascript) environment and the Acomba accounting and management software.
+
+This guide will teach you how to :
+
+1. Fetch data from Acomba
+2. Write simple and complex scripts to automate certain tasks
+3. Export data in various format (excel, csv, etc)
+4. Create a web service exposing some (or all) concepts
+
+== What is the Acomba Node.JS driver?
+
+The Acomba Node.JS driver is a module that wraps the somehow complex Acomba SDK by providing a more user-friendly API.

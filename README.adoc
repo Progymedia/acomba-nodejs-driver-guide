@@ -1,0 +1,26 @@
+= A gentle guide to programming with Acomba Node.JS driver
+Sébastien Côté <scote@progymedia.com>
+v0.1 2020/06/25
+:doctype: book
+
+:leveloffset: +1
+
+NOTE: You can read the latest published version of the guide at https://progymedia.com/docs/acomba-nodejs-driver-guide/
+
+ifdef::rendered-pdf-link[]
+NOTE: This document is also link:{rendered-pdf-link}[available as a PDF].
+endif::[]
+
+:imagesdir: intro
+include::intro/README.adoc[]
+
+:imagesdir: step-0
+include::step-0/README.adoc[]
+
+:imagesdir: step-1
+include::step-1/README.adoc[]
+
+:imagesdir: step-2
+include::step-2/README.adoc[]
+
+:leveloffset: -1
